@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #This script shows the number that represent bad luck from different countries
-
 i=1
 while [ $i -lt 21 ];
 do
