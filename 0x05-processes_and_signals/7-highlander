@@ -3,7 +3,7 @@
 #a sleep 2 in between each iteration
 #i am invicible!!! when receiving a SIGTERM signal
 
-trap "echo I am invincible!!!; exit" SIGTERM
+trap 'echo "I am invincible!!!"; exit' SIGTERM
 while true
 do
 	echo "To infinity and beyond"
