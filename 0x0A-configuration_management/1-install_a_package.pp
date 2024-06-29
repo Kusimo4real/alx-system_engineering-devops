@@ -1,10 +1,8 @@
-#install flak
+#install flask
 #version must be 2.1.0
 
-include sys::git
-
-venv_package { 'Flask@/srv/venv':
-ensure  => '2.1.0',
-source  => 'git+https://github.com/mitsuhiko/flask',
-require => Class['sys::git'],
+exec { 'install flask':
+command => pip3 install Flask==2.1.0,
+path 	=> ['/usr/bin/'],
+unless  => '/usr/bin/',
 }
