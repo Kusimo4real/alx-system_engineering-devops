@@ -1,0 +1,7 @@
+Host tabs
+     HostName 34.207.212.227
+     user Ubuntu
+     IdentityFile ~/.ssh/school
+
+
+PasswordAuthentication no
