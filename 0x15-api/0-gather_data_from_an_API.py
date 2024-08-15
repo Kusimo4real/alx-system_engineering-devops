@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# API
+
 import requests
 
 def fetch_employee_todo_progress(employee_id):
