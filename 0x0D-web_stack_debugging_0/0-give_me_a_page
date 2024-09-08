@@ -1,0 +1,6 @@
+#check if the if the apache2 is started in the container "service apache2 status"
+#if it is started restart it "service apache2 restart"
+#if it is not started start it "service apache2 start"
+#check the apache folder for hosting file if apache2 is in the file
+
+service apache2 start
