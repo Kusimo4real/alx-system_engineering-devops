@@ -4,4 +4,4 @@
 #if it is not started start it "service apache2 start"
 #check the apache folder for hosting file if apache2 is in the file
 
-service apache2 start
+service apache2 restart
