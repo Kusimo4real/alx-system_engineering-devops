@@ -1,58 +1,48 @@
 #!/usr/bin/python3
-# API
-
 import requests
+import sys
 
-def fetch_employee_todo_progress(employee_id):
-    # Base URL for the API
-    base_url = "https://jsonplaceholder.typicode.com"
-    
-    # Construct the URL for user details
-    user_url = f"{base_url}/users/{employee_id}"
-    
-    # Send a GET request to fetch the user details
-    response_user = requests.get(user_url)
-    
-    # Convert the response to a dictionary (JSON object)
-    user_data = response_user.json()
-    
-    # Extract the employee's name from the user data
-    employee_name = user_data['name']
-    
-    # Construct the URL for the employee's TODO list
-    todos_url = f"{base_url}/todos?userId={employee_id}"
-    
-    # Send a GET request to fetch the TODO list
-    response_todos = requests.get(todos_url)
-    
-    # Convert the response to a list of dictionaries (JSON array)
-    todos_data = response_todos.json()
-    
-    # Calculate the total number of tasks
-    total_tasks = len(todos_data)
-    
-    # Filter the list to only include completed tasks
-    done_tasks = [task for task in todos_data if task['completed']]
-    
-    # Calculate the number of completed tasks
-    number_of_done_tasks = len(done_tasks)
-    
-    # Print the progress information
-    print(f"Employee {employee_name} is done with tasks({number_of_done_tasks}/{total_tasks}):")
-    
-    # Print the titles of completed tasks
-    for task in done_tasks:
-        print(f"\t {task['title']}")
-
-# Example usage
 if __name__ == "__main__":
-    import sys
+    # Check if the script was given an argument (employee ID)
     if len(sys.argv) != 2:
-        print("Usage: python script.py <employee_id>")
-    else:
-        try:
-            employee_id = int(sys.argv[1])
-            fetch_employee_todo_progress(employee_id)
-        except ValueError:
-            print("Please provide a valid integer for employee ID.")
+        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
+        sys.exit(1)
+
+    # Get the employee ID from the command line
+    employee_id = sys.argv[1]
+
+    try:
+        # Convert employee_id to an integer
+        employee_id = int(employee_id)
+    except ValueError:
+        print("Employee ID must be an integer")
+        sys.exit(1)
+
+    # Fetch user information
+    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    user_response = requests.get(user_url)
+    
+    if user_response.status_code != 200:
+        print(f"User with ID {employee_id} not found.")
+        sys.exit(1)
+
+    # Parse the user information
+    user_data = user_response.json()
+    employee_name = user_data.get('name')
+
+    # Fetch tasks for the user
+    tasks_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    tasks_response = requests.get(tasks_url)
+    tasks_data = tasks_response.json()
+
+    # Filter tasks into completed and total
+    completed_tasks = [task for task in tasks_data if task.get('completed')]
+    total_tasks = len(tasks_data)
+
+    # Print the employee's TODO list progress
+    print(f"Employee {employee_name} is done with tasks({len(completed_tasks)}/{total_tasks}):")
+
+    # Print each completed task title
+    for task in completed_tasks:
+        print(f"\t {task.get('title')}")
 
